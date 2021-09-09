@@ -1,5 +1,11 @@
-const path = require("path");
 
+
+const path = require("path");
+require('dotenv').config({
+	path: __dirname + '/.env'
+
+})
+console.log(process.env.MONGO_URI, '\n', '\n\n\n\n\n\n\n dattebayo! \n\n\n\n\n\n');
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -8,6 +14,7 @@ const multer = require("multer");
 const authRoutes = require("./routes/auth");
 const itemRoutes = require("./routes/item");
 const userRoutes = require("./routes/user");
+
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -72,9 +79,7 @@ app.use((error, req, res, next) => {
 const clients = {};
 
 mongoose
-  .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0-fvjx9.mongodb.net/${process.env.MONGO_DATABASE}?authSource=admin&replicaSet=Cluster0-shard-0&readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=true`
-  )
+  .connect(process.env.MONGO_URI)
   .then((result) => {
     console.log("Connected to db");
     const server = app.listen(process.env.PORT || 3002);
